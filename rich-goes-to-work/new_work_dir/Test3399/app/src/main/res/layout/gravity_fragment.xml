@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/gravity_layout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="重力测试"
+        android:paddingLeft="10dp"
+       />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gravity_textview_x"
+        android:text="x值："
+        android:paddingLeft="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gravity_textview_y"
+        android:text="y值："
+        android:paddingLeft="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gravity_textview_z"
+        android:text="z值："
+        android:paddingLeft="5dp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+
+        >
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="是"
+            android:textSize="20sp"
+            />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="否"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

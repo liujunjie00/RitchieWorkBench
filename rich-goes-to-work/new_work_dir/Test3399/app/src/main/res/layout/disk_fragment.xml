@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/disk_layout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="U盘 sd卡 检测"
+        android:paddingLeft="10dp"
+        />
+<TextView
+    android:id="@+id/u_disk_textview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="没有读到U盘"
+    android:paddingLeft="10dp"
+
+
+    />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sdcard_textview"
+        android:text="没有读到sd卡"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="2dp"
+        />
+
+
+</LinearLayout>

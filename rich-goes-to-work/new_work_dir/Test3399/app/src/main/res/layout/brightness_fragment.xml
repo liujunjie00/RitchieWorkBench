@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="亮度cd"
+        android:id="@+id/brightness_btn1"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请留意屏幕 亮度条 的变化"
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:visibility="gone"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/brightness_wink"
+            android:layout_marginLeft="15dp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/brightness"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ProgressBar"
+            style="@android:style/Widget.Material.ProgressBar.Horizontal"
+            android:max="255"
+            android:progress="0"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/brightness_btn2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textSize="20sp"
+            android:text="是"
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/brightness_btn3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="否"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>

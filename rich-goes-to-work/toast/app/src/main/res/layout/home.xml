@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="280dp"
+        android:orientation="vertical"
+        android:background="@drawable/home_main_stayle"
+        android:layout_marginTop="20dp"
+
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="70dp"
+            android:id="@+id/home_btn"
+            android:background="@drawable/home_staly"
+            android:textColor="@color/white"
+            android:text="HOME"
+            android:textStyle="bold"
+            android:textSize="22sp"
+
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="回首页 或 关机其他应用"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="22dp"
+            android:id="@+id/home_hint"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

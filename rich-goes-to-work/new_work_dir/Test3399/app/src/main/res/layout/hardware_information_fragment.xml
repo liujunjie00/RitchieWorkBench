@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/cpu_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cpu 信息："
+        android:layout_marginLeft="5dp"
+
+        />
+    <TextView
+        android:id="@+id/memory_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="内存信息："
+        android:paddingLeft="10dp"/>
+    <TextView
+        android:id="@+id/storage_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="总存储空间 ："
+        android:paddingLeft="10dp"
+        />
+
+</LinearLayout>

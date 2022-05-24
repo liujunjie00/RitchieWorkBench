@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/drawable/fragment_shape.xml" value="0.378125" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/drawable/layout_no_test.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/drawable/layout_on_test.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/bluetooth_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/brightness_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/brightness_fragment2.xml" value="0.35778985507246375" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/camera_fragment.xml" value="0.3515625" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/disk_fragment.xml" value="0.35778985507246375" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/gravity_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/hardware_information_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/layout.xml" value="0.5" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/lcd_fragment.xml" value="0.3515625" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/recording_fragment.xml" value="0.2796833773087071" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/speark_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/touch_fragment.xml" value="0.5653964984552008" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/version_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/video_fragment.xml" value="0.35778985507246375" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/Test3399/app/src/main/res/layout/wifi_fragment.xml" value="0.3515625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/drawable/fragment_shape.xml" value="0.38229166666666664" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/bluetooth_fragment.xml" value="0.32653985507246375" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/brightness_fragment.xml" value="0.32653985507246375" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/camera_fragment.xml" value="0.32653985507246375" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/disk_fragment.xml" value="0.3342391304347826" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/gravity_fragment.xml" value="0.33605072463768115" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/hardware_information_fragment.xml" value="0.32653985507246375" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/network_port_fragment.xml" value="0.3342391304347826" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/network_port_layout.xml" value="0.3342391304347826" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/recording_fragment.xml" value="0.36614583333333334" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/touch_fragment.xml" value="0.32653985507246375" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/version_fragment.xml" value="0.32653985507246375" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/video_fragment.xml" value="0.1921875" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/wifi_item.xml" value="0.32653985507246375" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/bluetooth_fragment.xml" value="0.24947916666666667" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/bt_item.xml" value="0.24947916666666667" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/wifi_fragment.xml" value="0.24947916666666667" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/layout/wifi_item.xml" value="0.24947916666666667" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26153846153846155" />
+        <entry key="..\:/workSpace/liqi/rich-goes-to-work/new_work_dir/Test3399/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.26153846153846155" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.33" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

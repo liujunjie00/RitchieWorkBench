@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26153846153846155" />
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/drawable/reboot.xml" value="0.26153846153846155" />
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/drawable/toast_staly.xml" value="0.26153846153846155" />
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/layout/layout.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/layout/reboot.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/20559/AndroidStudioProjects/toast/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26153846153846155" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/coustom_bar.xml" value="0.365625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/home_main_stayle.xml" value="0.365625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/home_staly.xml" value="0.3697916666666667" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/homestely.xml" value="0.38229166666666664" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/item.xml" value="0.365625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/newsss.xml" value="0.20104166666666667" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/sb_thumb.xml" value="0.365625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/thum_bar_coustom.xml" value="0.365625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/toast_staly.xml" value="0.3517948717948718" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/drawable/touch_button_style.xml" value="0.365625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/activity_vr.xml" value="0.30344202898550726" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/home.xml" value="0.36614583333333334" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/install.xml" value="0.36614583333333334" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/layout_toast.xml" value="0.16590678824721378" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/reboot.xml" value="0.16995947315096252" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/test1.xml" value="0.3515625" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/test2.xml" value="0.17806484295845998" />
+        <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/toast/app/src/main/res/layout/test3.xml" value="0.17198581560283688" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
