@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,8 +29,6 @@ import com.ritchie.mapsandftms.proFile.BikeData1;
 import com.ritchie.mapsandftms.service.RuningService;
 import com.ritchie.mapsandftms.ui.VerticalProgress;
 import com.ritchie.mapsandftms.util.MapsTools;
-import com.ritchie.mapsandftms.util.ViewTouchMove;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,8 +82,8 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
             layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
             layoutParams.format = PixelFormat.RGB_565;
             layoutParams.alpha = 0.8f;
-            layoutParams.width = 300;
-            layoutParams.height = 700;
+            layoutParams.width = 330;
+            layoutParams.height = 600;
             layoutParams.gravity = Gravity.LEFT;
             layoutParams.x = 10;
             layoutParams.y = 10;
@@ -105,8 +104,6 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
             random = new Random();
             handler = new Handler(Looper.myLooper());
             handler.postDelayed(runnable1, 2 * 1000);
-
-
         }
     }
 
@@ -144,6 +141,8 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
             }
         });
     }
+
+
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {

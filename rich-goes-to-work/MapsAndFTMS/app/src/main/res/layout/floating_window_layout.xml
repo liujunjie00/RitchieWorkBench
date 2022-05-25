@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:background="#AA8585">
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="match_parent"
@@ -19,13 +19,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginLeft="10dp"
             />
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/test_view2"
-            android:text="这个是提示信息"
-            android:textSize="25dp"
-            />
+
     </LinearLayout>
 
     <LinearLayout
@@ -104,6 +98,13 @@
             android:layout_height="wrap_content"
             android:text="修改数据"
             android:id="@+id/button5"
+            />
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/test_view2"
+            android:text="这个是提示信息"
+            android:textSize="25dp"
             />
      </LinearLayout>
     </LinearLayout>

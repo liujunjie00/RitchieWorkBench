@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/github/RitchieWorkBench/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/activity_main.xml" value="0.3536458333333333" />
+        <entry key="..\:/github/RitchieWorkBench/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/floating_window_layout.xml" value="0.3536458333333333" />
+        <entry key="..\:/github/RitchieWorkBench/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/item_tanke_layout.xml" value="0.3390625" />
+        <entry key="..\:/github/RitchieWorkBench/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/list_view_item_maps.xml" value="0.3536458333333333" />
+        <entry key="..\:/github/RitchieWorkBench/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/tankelayout.xml" value="0.3390625" />
+        <entry key="..\:/github/RitchieWorkBench/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/view_tanke_layout.xml" value="0.3390625" />
         <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/MapsAndFTMS/app/src/main/res/drawable/click_maps_click.xml" value="0.3697916666666667" />
         <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/MapsAndFTMS/app/src/main/res/drawable/progress_vertical_gradient_simple_shape.xml" value="0.3641025641025641" />
         <entry key="..\:/workBeenhForLiQi/rich-goes-to-work/MapsAndFTMS/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />

@@ -16,6 +16,7 @@ import com.clj.fastble.BleManager;
 import com.clj.fastble.conn.BleCharacterCallback;
 import com.clj.fastble.conn.BleGattCallback;
 import com.clj.fastble.exception.BleException;
+import com.ritchie.mapsandftms.games.GameModel;
 import com.ritchie.mapsandftms.proFile.BikeData1;
 import com.ritchie.mapsandftms.proFile.BikeData2;
 import com.ritchie.mapsandftms.proFile.IconsoleProFile;
@@ -109,7 +110,7 @@ public class RuningService extends Service {
             public void onSuccess(BluetoothGattCharacteristic characteristic) {
                 byte[] dataBytes = characteristic.getValue();
                 BikeData1 c = IconsoleProFile.getBikeData2(dataBytes);
-                FloatingWindow.upData(c);
+                GameModel.upData(c);
                 Log.d(TAG, "onSuccess: "+dataBytes.toString());
             }
 

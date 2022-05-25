@@ -2,13 +2,23 @@ package com.ritchie.mapsandftms.features;
 
 public class SkillData {
     private int index;
-    private long offSize;
+    private long computerOffSize;
     private int Value;
     private int defaultValue;
     private String name;
 
+    public long getPhysicalAddress() {
+        return physicalAddress;
+    }
+
+    public void setPhysicalAddress(long physicalAddress) {
+        this.physicalAddress = physicalAddress;
+    }
+
+    private long physicalAddress;
+
     public SkillData(int index,long offSize, int value, int defaultValue,String name) {
-        this.offSize = offSize;
+        this.computerOffSize = offSize;
         Value = value;
         this.defaultValue = defaultValue;
         this.index = index;
@@ -20,7 +30,7 @@ public class SkillData {
     }
 
     public long getOffSize() {
-        return offSize;
+        return computerOffSize;
     }
 
     public int getValue() {
@@ -30,6 +40,11 @@ public class SkillData {
     public int getDefaultValue() {
         return defaultValue;
     }
+
+    public void setOffSize(long offSize) {
+        this.computerOffSize = offSize;
+    }
+
     public String getName() {
         return name;
     }

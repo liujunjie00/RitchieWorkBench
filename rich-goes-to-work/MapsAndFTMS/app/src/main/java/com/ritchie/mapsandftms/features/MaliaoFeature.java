@@ -51,6 +51,10 @@ public class MaliaoFeature extends Feature{
                 highJump_fullScreen};
     }
 
+    public MaliaoFeature(SkillData[] skillData) {
+    this.skillDataList = skillData;
+    }
+
     public MaliaoFeature() {
     }
 

@@ -2,8 +2,11 @@ package com.ritchie.mapsandftms.util;
 
 import android.util.Log;
 
+import com.ritchie.mapsandftms.features.BaseCharacter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsTools {
     public static final String TAG = "MapsTools";
@@ -22,7 +25,7 @@ public class MapsTools {
     }
     /**
      * 这个函数就是筛选动作，这个数据搜索所有的关卡 ，*/
-    public static List<String[]> getTest66(int pid,List<String[]> list) {
+    public static List<String[]> getTest66(int pid, List<String[]> list) {
         List<String[]> test66 = new ArrayList<>(50);
         for (int i = 0; i < list.size(); i++) {
             // 这里查找到的返回值必须是带有test66字段的
@@ -31,6 +34,30 @@ public class MapsTools {
             if (result.length()>1 && result.contains("test66")){
                 Log.d(TAG, "查找到的结果是"+result);
                 String[] ttr = new String[]{list.get(i)[0],list.get(i)[1],result};
+                test66.add(ttr);
+            }
+
+        }
+        if (test66.size()<1){
+
+            throw new RuntimeException("没有查找到test66");
+        }
+        return test66;
+    }
+
+    public static List<String[]> getTest66(int pid, List<String[]> list, BaseCharacter baseCharacter) {
+        List<String[]> test66 = new ArrayList<>(50);
+        for (int i = 0; i < list.size(); i++) {
+            // 这里查找到的返回值必须是带有test66字段的
+            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/tanKeReadOnceReturn.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
+            String result = stringBuilder.toString();
+            if (result.length()>1 && result.contains("test66")){
+                Log.d(TAG, "查找到的结果是"+result);
+                //这里应该处理三个值 ，一个开始的内存的地址，一个结束的内存的地址，还有一个就是i offSize
+                //查找到的结果是pidaa: 1968, start-addr:0xd1b80000,end-addr:0xd1c00000,value:88
+                //                  he_test666:get end addr:0xd1b80000 , end:0xd1c00000,offset:137600
+                String offset = result.substring(result.indexOf("offset:")+7,result.length()).trim();
+                String[] ttr = new String[]{list.get(i)[0],list.get(i)[1],offset};
                 test66.add(ttr);
             }
 
@@ -75,6 +102,30 @@ public class MapsTools {
         Log.d(TAG, "oneSearch: 单个查询的结果是"+result);
         return result;
     }
+    /**
+     * 这个是关于坦克大战的搜索函数*/
+    public static List<String[]> getTest66fortanKe(int pid,List<String[]> list) {
+        List<String[]> test66 = new ArrayList<>(50);
+        for (int i = 0; i < list.size(); i++) {
+            // 这里查找到的返回值必须是带有test66字段的
+            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/tanKeReadOnceReturn.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
+            String result = stringBuilder.toString();
+            if (result.length()>1 && result.contains("test66")){
+                Log.d(TAG, "查找到的结果是"+result);
+                String[] ttr = new String[]{list.get(i)[0],list.get(i)[1],result};
+                test66.add(ttr);
+            }
+        }
+        if (test66.size()<1){
+            throw new RuntimeException("没有查找到test66");
+        }
+        return test66;
+    }
+
+
+
+
+
     /**
      * 这个是返回值是maps 的long类型，不用了因为底层c语言实现了输入16位字符串直接转数字*/
     @Deprecated
