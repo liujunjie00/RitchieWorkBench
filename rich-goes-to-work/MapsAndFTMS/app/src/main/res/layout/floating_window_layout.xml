@@ -106,6 +106,15 @@
             android:text="这个是提示信息"
             android:textSize="25dp"
             />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/test_view3"
+            android:text="这个是提示信息"
+            android:textSize="25dp"
+            />
+
      </LinearLayout>
     </LinearLayout>
 

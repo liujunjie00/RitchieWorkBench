@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -19,11 +20,14 @@ import com.ritchie.mapsandftms.service.RuningService;
 public class MainActivity extends Activity {
     private String[] perms;
     private int requestCode=0;
+    private ImageView imageView1,imageView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+        imageView1 = findViewById(R.id.imageView1);
+        imageView2 = findViewById(R.id.imageView2);
         /***
          * 获取权限 */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !Settings.canDrawOverlays(this)){
@@ -32,11 +36,12 @@ public class MainActivity extends Activity {
             startActivity(intent);
         }
         checkPermission();
+
         // 开启maps服务
         Intent intent1 = new Intent(this, ReadandwriteService.class);
         startService(intent1);
 
-        finish();
+       finish();
     }
 
     @Override

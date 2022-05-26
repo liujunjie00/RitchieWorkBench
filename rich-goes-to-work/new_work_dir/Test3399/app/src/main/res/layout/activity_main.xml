@@ -156,6 +156,21 @@
             android:background="@drawable/fragment_shape"
             android:layout_marginTop="2dp"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="ritchie"
+            android:textSize="30sp"
+
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="40dp"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            android:src="@drawable/ritchie"
+            android:layout_marginLeft="30dp"
+            />
 
     </LinearLayout>
 

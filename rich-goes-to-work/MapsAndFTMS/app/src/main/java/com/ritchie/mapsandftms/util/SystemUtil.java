@@ -165,5 +165,10 @@ public class SystemUtil {
 		}
 		return false;
 	}
+	/**
+	 * 退出应用*/
+    public static void KillPid(int pid) {
+		execShellCmd2("su root kill "+pid);
 
+    }
 }

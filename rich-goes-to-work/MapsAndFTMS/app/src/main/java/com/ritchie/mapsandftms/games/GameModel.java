@@ -34,8 +34,7 @@ import com.ritchie.mapsandftms.proFile.BikeData1;
 import com.ritchie.mapsandftms.service.RuningService;
 import com.ritchie.mapsandftms.ui.VerticalProgress;
 import com.ritchie.mapsandftms.util.MapsTools;
-import com.ritchie.mapsandftms.window.FloatingWindow;
-
+import com.ritchie.mapsandftms.util.SystemUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +50,7 @@ public class GameModel implements View.OnClickListener{
     private WindowManager.LayoutParams layoutParams;
     private  DisplayMetrics displayMetrics;
     private View view;
-    private Button button1,button2,button3,button4,button5;
+    private Button button1,button2,button3,button4,button5,textView3;
     private ListView listView1;
     private TextView textViewMain,textView2;
     private VerticalProgress verticalProgress;
@@ -75,6 +74,8 @@ public class GameModel implements View.OnClickListener{
     private TankeFeature tankeFeature;
     private boolean starGame = false;
     private int test;
+    private int countCad = 0;
+    private int countCad1 = 0;
 
     public void initWindow(){
         if (Settings.canDrawOverlays(context)) {
@@ -104,10 +105,12 @@ public class GameModel implements View.OnClickListener{
             editText4 = view.findViewById(R.id.edit_text4);
             button5 = view.findViewById(R.id.button5);
             textView2 = view.findViewById(R.id.test_view2);
+            textView3 = view.findViewById(R.id.test_view3);
+
             random = new Random();
             handler = new Handler(Looper.myLooper());
             //他创建出来的那一刻就是监听
-            handler.postDelayed(runnable1, 2 * 1000);
+            handler.postDelayed(runnable2, 2 * 1000);
         }
     }
     /**
@@ -119,6 +122,7 @@ public class GameModel implements View.OnClickListener{
         button4.setOnClickListener(this::onClick);
         button5.setOnClickListener(this::onClick);
         view.setOnClickListener(this::onClick);
+        textView3.setOnClickListener(this::onClick);
         view.setOnTouchListener(new View.OnTouchListener() {
             final WindowManager.LayoutParams floatWindowLayoutUpdateParam = layoutParams;
             double x;
@@ -163,11 +167,19 @@ public class GameModel implements View.OnClickListener{
                 button4Event();
             case R.id.button5:
                 button5Event();
+            case R.id.test_view3:
+                shoutdown();
         }
         updateViewLayoutForKey(false);
 
 
     }
+
+    private void shoutdown() {
+        int mypid = android.os.Process.myPid();
+        SystemUtil.KillPid(mypid);
+    }
+
     /**
      * 这个是一个键盘切换处理器
      */
@@ -241,9 +253,9 @@ public class GameModel implements View.OnClickListener{
                         deviceShow.add(hashMap);
                     }
                     textViewMain.setText("执行完成");
+                    listView1.setVisibility(View.VISIBLE);
                     simpleAdapter = new SimpleAdapter(context, deviceShow, R.layout.list_view_item_maps, new String[]{"star", "end"}, new int[]{R.id.star_addr, R.id.end_addr});
                     listView1.setAdapter(simpleAdapter);
-                    listView1.setVisibility(View.VISIBLE);
 
                 } catch (RuntimeException e) {
                     if (list != null) {
@@ -272,7 +284,8 @@ public class GameModel implements View.OnClickListener{
             head = start+sizeOff-tankeFeature.getBaseCharacter().getIndex(); //这个是绝对的不变的字符的数
             long addrLong = head+tankeFeature.getSkillData()[test].getOffSize();
             String addr1 = String.format("%016x",addrLong);
-            MapsTools.fastWrite1(pid,"0x"+addr1,0x40);
+            MapsTools.fastWrite1(pid,"0x"+addr1,tankeFeature.getSkillData()[test].getDefaultValue());
+            MapsTools.fastWrite1(pid,"0x"+addr1,tankeFeature.getSkillData()[test].getValue());
 
             if (starAddr != null) {
                 onClickStar = starAddr;
@@ -284,6 +297,8 @@ public class GameModel implements View.OnClickListener{
             textViewMain.setText(" 0x" + onClickStar + " 0x" + onClickEnd);
         }
     }
+    /**
+     * 这个是马里奥的线程监听器*/
     Runnable runnable1 = new Runnable() {
         @Override
         public void run() {
@@ -320,6 +335,83 @@ public class GameModel implements View.OnClickListener{
                 }
             }
         }
+    };
+
+    int timer = 0;
+    Runnable runnable2 = new Runnable() {
+        @Override
+        public void run() {
+            textView3.setText(" "+(timer++));
+            if (bikeData != null && bikeData instanceof BikeData1) {
+                BikeData1 bikeData1 = (BikeData1) bikeData;
+                int Cadence = bikeData1.getInstantaneousCadence();
+                int countKM = bikeData1.getTotalDistancePresentUint();
+                if (countCad1 < 3) {
+                    countCad += Cadence;
+                    countCad1++;
+                    if (countCad1 == 3) {
+                        if (countCad < 30 * 3) {
+                            SkillData[] skillData = tankeFeature.getSkillData();
+                            long addr = skillData[0].getPhysicalAddress();
+                            String ssss = String.format("%016x",addr);
+                            String addrdd = "0x" + ssss;
+                            MapsTools.fastWrite1(pid, addrdd, 0x00);
+                            textView2.setText("正常模式");
+                        }
+                        if (countCad > 30 * 3 && countCad < 55 *3) {
+                            SkillData[] skillData = tankeFeature.getSkillData();
+                            long addr = skillData[0].getPhysicalAddress();
+                            String ssss = String.format("%016x",addr);
+                            String addrdd = "0x" + ssss;
+                            MapsTools.fastWrite1(pid, addrdd, 0x20);
+                            textView2.setText("模式1");
+                        }
+
+                        if (countCad > 55 * 3 && countCad <70 * 3 ) {
+                            SkillData[] skillData = tankeFeature.getSkillData();
+                            long addr = skillData[0].getPhysicalAddress();
+                            String ssss = String.format("%016x",addr);
+                            String addrdd = "0x" + ssss;
+                            MapsTools.fastWrite1(pid, addrdd, 0x40);
+                            textView2.setText("模式2");
+                        }
+                        if (countCad > 70 * 3 && countCad <110 * 3) {
+                            SkillData[] skillData = tankeFeature.getSkillData();
+                            long addr = skillData[0].getPhysicalAddress();
+                            String ssss = String.format("%016x",addr);
+                            String addrdd = "0x" + ssss;
+                            MapsTools.fastWrite1(pid, addrdd, 0x60);
+                            textView2.setText("模式3");
+                        }
+                        if (countCad > 110 * 3) {
+                            SkillData[] skillData = tankeFeature.getSkillData();
+                            long addr = skillData[4].getPhysicalAddress();
+                            String ssss = String.format("%016x",addr);
+                            String addrdd = "0x" + ssss;
+                            MapsTools.fastWrite1(pid, addrdd, 0x03);
+                            textView2.setText("模式3");
+                        }
+
+
+                    }
+
+                } else {
+                    countCad = 0;
+                    countCad1 = 0;
+                }
+                double ss = 100/60;
+                int speed = (int) (ss*Cadence);
+                verticalProgress.setProgress(speed);
+                textViewMain.setText("现在的踏频是："+Cadence);
+            }
+                handler.postDelayed(runnable2, 1 * 1000);
+
+
+        }
+        public void vertical(int countKM,boolean iso) {
+
+        }
+
     };
     /**
      * 这个方法是测试用到的，过时了*/
@@ -366,6 +458,7 @@ public class GameModel implements View.OnClickListener{
             }
         }, 10 * 1000);
     }
+
     public static void upData(Bike c) {
         bikeData = c;
     }

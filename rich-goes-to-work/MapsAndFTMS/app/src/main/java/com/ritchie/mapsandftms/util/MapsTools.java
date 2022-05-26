@@ -154,6 +154,7 @@ public class MapsTools {
      * */
     public static List<String[]> getStartAndEnd(int pid){
         String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep rw-p | grep -A200 /lib/arm/libnes.so");
+        //String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep rw-p ");
         //String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep -A500 /lib/arm/libnes.so");
         if (ff.length()<2){
             throw new RuntimeException("没有搜到任何maps数据，请检查马里奥是否运行");
