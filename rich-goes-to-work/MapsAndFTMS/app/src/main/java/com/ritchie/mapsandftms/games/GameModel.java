@@ -350,7 +350,7 @@ public class GameModel implements View.OnClickListener{
                     countCad += Cadence;
                     countCad1++;
                     if (countCad1 == 3) {
-                        if (countCad < 30 * 3) {
+                        if (countCad < 20 * 3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -358,7 +358,7 @@ public class GameModel implements View.OnClickListener{
                             MapsTools.fastWrite1(pid, addrdd, 0x00);
                             textView2.setText("正常模式");
                         }
-                        if (countCad > 30 * 3 && countCad < 55 *3) {
+                        if (countCad > 35 * 3 && countCad < 50 *3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -367,7 +367,7 @@ public class GameModel implements View.OnClickListener{
                             textView2.setText("模式1");
                         }
 
-                        if (countCad > 55 * 3 && countCad <70 * 3 ) {
+                        if (countCad > 50 * 3 && countCad <65 * 3 ) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -375,7 +375,7 @@ public class GameModel implements View.OnClickListener{
                             MapsTools.fastWrite1(pid, addrdd, 0x40);
                             textView2.setText("模式2");
                         }
-                        if (countCad > 70 * 3 && countCad <110 * 3) {
+                        if (countCad > 65 * 3 && countCad <80 * 3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -383,13 +383,13 @@ public class GameModel implements View.OnClickListener{
                             MapsTools.fastWrite1(pid, addrdd, 0x60);
                             textView2.setText("模式3");
                         }
-                        if (countCad > 110 * 3) {
+                        if (countCad > 80 * 3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[4].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
                             String addrdd = "0x" + ssss;
                             MapsTools.fastWrite1(pid, addrdd, 0x03);
-                            textView2.setText("模式3");
+                            textView2.setText("敌方静止不动");
                         }
 
 
