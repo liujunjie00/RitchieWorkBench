@@ -4,10 +4,14 @@ import static android.content.Context.WINDOW_SERVICE;
 
 import static com.ritchie.mapsandftms.window.FloatingWindow.bikeData;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -31,7 +35,9 @@ import com.ritchie.mapsandftms.features.SkillData;
 import com.ritchie.mapsandftms.features.TankeFeature;
 import com.ritchie.mapsandftms.proFile.Bike;
 import com.ritchie.mapsandftms.proFile.BikeData1;
+import com.ritchie.mapsandftms.proFile.ListParcelable;
 import com.ritchie.mapsandftms.service.RuningService;
+import com.ritchie.mapsandftms.service.SearchMapsServices;
 import com.ritchie.mapsandftms.ui.VerticalProgress;
 import com.ritchie.mapsandftms.util.MapsTools;
 import com.ritchie.mapsandftms.util.SystemUtil;
@@ -61,7 +67,9 @@ public class GameModel implements View.OnClickListener{
     private BaseCharacter baseCharacter;            // 这个表示坦克大战的字符串
     private SkillData[] skillDataList;         // 这个是技能数组
     private Context context;
-    private int pid;
+    private Integer pid = null ;
+    private List<String[]> test66s = null;
+    private List<String[]> list = null;
     private SimpleAdapter simpleAdapter;
     private String[] onClickMapsItem;
     private String onClickStar;
@@ -69,15 +77,92 @@ public class GameModel implements View.OnClickListener{
     private boolean superKey = false;
     private long lenForI;
     private MaliaoFeature maliaoFeature;
-    private List<String[]> test66s;
+
     private long head;
     private TankeFeature tankeFeature;
     private boolean starGame = false;
     private int test;
     private int countCad = 0;
     private int countCad1 = 0;
+    private Handler handlerSearchMaps;
+    /**
+     * 这是一个广播接收器，接受处理maps的数据
+     * “searcherMaps”
+     * */
+    private BroadcastReceiver broadcastReceiverMaps = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle bundle = intent.getExtras();
+            int id = bundle.getInt("pid");
+            if (id != -1) {
+                ListParcelable listPar = bundle.getParcelable("list");
+                ListParcelable test66sPar = bundle.getParcelable("test66s");
+                pid = id;
+                list = listPar.getList();
+                test66s = test66sPar.getList();
+
+                refreshListView();
+
+            }else {
+
+                textViewMain.setText("没有找到test66");
+            }
+        }
+    };
+    /**
+     * 刷新listView布局
+     * */
+    private void refreshListView(){
+        deviceShow = new ArrayList<>();
+        for (int i = 0; i < test66s.size(); i++) {
+            HashMap<String, Object> hashMap = new HashMap<String,Object>();
+            hashMap.put("star", test66s.get(i)[0]);
+            hashMap.put("end", test66s.get(i)[1]);
+            deviceShow.add(hashMap);
+        }
+        textViewMain.setText("执行完成");
+        listView1.setVisibility(View.VISIBLE);
+        simpleAdapter = new SimpleAdapter(context, deviceShow, R.layout.list_view_item_maps, new String[]{"star", "end"}, new int[]{R.id.star_addr, R.id.end_addr});
+        listView1.setAdapter(simpleAdapter);
+        listView1.setOnItemClickListener(new GameModel.OnItemClick());
+    }
+    /**
+     * 蓝牙数据的广播接收机
+     * */
+    private BroadcastReceiver broadcastReceiverBle = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            int state = bundle.getInt("state");
+            if (state != -1) {
+                BikeData1 bikeData1p = bundle.getParcelable("data");
+                bikeData = bikeData1p;
+                handler.post(runnable2);
+            }else {
+                textViewMain.setText("没有找到单车");
+            }
+        }
+    };
+    /**
+     * maps广播处理的动态注册
+     * */
+    public void initBroadcastReceiverMaps(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("searcherMaps");
+        context.registerReceiver(broadcastReceiverMaps,filter);
+    }
+    /**
+     * 需要弄一个蓝牙的动态注册接受*/
+    public void initBroadcastReceiverBle(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("FindBluetoothDevices");
+        context.registerReceiver(broadcastReceiverBle,filter);
+    }
 
     public void initWindow(){
+        initBroadcastReceiverMaps();
+        initBroadcastReceiverBle();
         if (Settings.canDrawOverlays(context)) {
             windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
             layoutParams = new WindowManager.LayoutParams();
@@ -109,8 +194,6 @@ public class GameModel implements View.OnClickListener{
 
             random = new Random();
             handler = new Handler(Looper.myLooper());
-            //他创建出来的那一刻就是监听
-            handler.postDelayed(runnable2, 2 * 1000);
         }
     }
     /**
@@ -155,7 +238,9 @@ public class GameModel implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button1:
-                button1Event();
+               // button1Event();
+                //button1EventService();
+                button1EventService2();
                 break;
             case R.id.button2:
                 button2Evemt();
@@ -165,10 +250,13 @@ public class GameModel implements View.OnClickListener{
                 break;
             case R.id.button4:
                 button4Event();
+                break;
             case R.id.button5:
                 button5Event();
+                break;
             case R.id.test_view3:
                 shoutdown();
+                break;
         }
         updateViewLayoutForKey(false);
 
@@ -199,6 +287,11 @@ public class GameModel implements View.OnClickListener{
 
 
     private void button5Event() {
+       int[] pids =  MapsTools.getPids("com.ezl.emulator.nes");
+        for (int i = 0; i < pids.length; i++) {
+            SystemUtil.KillPid(pids[i]);
+        }
+
     }
 
     private void button4Event() {
@@ -210,6 +303,12 @@ public class GameModel implements View.OnClickListener{
      * 开始游戏按钮
      * */
     private void button2Evemt() {
+            tankeFeature.init(head);
+            Intent intent2 = new Intent(context, RuningService.class);
+            context.startService(intent2);
+            textViewMain.setText("正在寻找单车");
+    }
+    /*private void button2Evemt() {
         if (!starGame){
             tankeFeature.init(head);
             Intent intent2 = new Intent(context, RuningService.class);
@@ -218,7 +317,7 @@ public class GameModel implements View.OnClickListener{
             starGame=true;
 
         }
-    }
+    }*/
     //开始扫描maps ，这里需要对新建的参数进行判断
     private void button1Event() {
         textViewMain.setText("正在查找");
@@ -233,25 +332,25 @@ public class GameModel implements View.OnClickListener{
         }
         listView1.setVisibility(View.GONE);
 
-        Handler handlerSearchMaps = new Handler();
+        handlerSearchMaps = new Handler();
+        /**
+         * 就是这里在加载视图的时候导致线程堵塞，应该要考虑拉起一个服务去执行加载动作
+         * */
         handlerSearchMaps.post(new Runnable() {
             @Override
             public void run() {
-                List<String[]> list = null;
                 textViewMain.setText("正在读取maps");
                 try {
                     pid = MapsTools.getPid("com.ezl.emulator.nes");
                     list = MapsTools.getStartAndEnd(pid);
-
-                    test66s = MapsTools.getTest66(pid, list,baseCharacter);
-                    textViewMain.setText("正在扫描内存");
-                    deviceShow = new ArrayList<>();
-                    for (int i = 0; i < test66s.size(); i++) {
-                        HashMap<String, Object> hashMap = new HashMap();
-                        hashMap.put("star", test66s.get(i)[0]);
-                        hashMap.put("end", test66s.get(i)[1]);
-                        deviceShow.add(hashMap);
-                    }
+                            test66s = MapsTools.getTest66(pid, list,baseCharacter);
+                            deviceShow = new ArrayList<>();
+                            for (int i = 0; i < test66s.size(); i++) {
+                                HashMap<String, Object> hashMap = new HashMap();
+                                hashMap.put("star", test66s.get(i)[0]);
+                                hashMap.put("end", test66s.get(i)[1]);
+                                deviceShow.add(hashMap);
+                            }
                     textViewMain.setText("执行完成");
                     listView1.setVisibility(View.VISIBLE);
                     simpleAdapter = new SimpleAdapter(context, deviceShow, R.layout.list_view_item_maps, new String[]{"star", "end"}, new int[]{R.id.star_addr, R.id.end_addr});
@@ -270,6 +369,84 @@ public class GameModel implements View.OnClickListener{
         });
         listView1.setOnItemClickListener(new GameModel.OnItemClick());
     }
+
+
+    private void button1EventService() {
+        handlerSearchMaps = new Handler();
+        textViewMain.setText("正在查找");
+        if (deviceShow != null) {
+            deviceShow.clear();
+            listView1.clearAnimation();
+        }
+        if (simpleAdapter != null) {
+
+            simpleAdapter = null;
+        }
+        listView1.setVisibility(View.GONE);
+
+        Intent intent3 = new Intent(context, SearchMapsServices.class);
+        context.startService(intent3);
+
+
+        handlerSearchMaps.postDelayed(new Runnable() {
+            int timeoutSearch = 0;
+            @Override
+            public void run() {
+                if (test66s != null){
+                    deviceShow = new ArrayList<>();
+                    for (int i = 0; i < test66s.size(); i++) {
+                        HashMap<String, Object> hashMap = new HashMap();
+                        hashMap.put("star", test66s.get(i)[0]);
+                        hashMap.put("end", test66s.get(i)[1]);
+                        deviceShow.add(hashMap);
+                    }
+                    textViewMain.setText("执行完成");
+                    listView1.setVisibility(View.VISIBLE);
+                    simpleAdapter = new SimpleAdapter(context, deviceShow, R.layout.list_view_item_maps, new String[]{"star", "end"}, new int[]{R.id.star_addr, R.id.end_addr});
+                    listView1.setAdapter(simpleAdapter);
+                }else {
+                    timeoutSearch++;
+                    if (timeoutSearch>5){
+                        textViewMain.setText("耐心等待一会");
+                    }
+                    if (timeoutSearch>15){
+                        textViewMain.setText("已经超时");
+                    }else {
+                        handlerSearchMaps.postDelayed(this::run,1*1000);
+                    }
+                }
+            }
+        },5*1000);
+        listView1.setOnItemClickListener(new GameModel.OnItemClick());
+    }
+
+
+    /**
+     * 新开一个线程去查找map
+     * */
+    private void button1EventService2() {
+        handlerSearchMaps = new Handler();
+        textViewMain.setText("正在查找");
+        if (deviceShow != null) {
+            deviceShow.clear();
+            listView1.clearAnimation();
+        }
+        if (simpleAdapter != null) {
+
+            simpleAdapter = null;
+        }
+        listView1.setVisibility(View.GONE);
+        handlerSearchMaps.post(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent3 = new Intent(context, SearchMapsServices.class);
+                context.startService(intent3);
+            }
+        });
+    }
+    /**
+     * listview 的点击事件类
+     * */
     class OnItemClick implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -338,6 +515,11 @@ public class GameModel implements View.OnClickListener{
     };
 
     int timer = 0;
+    /**
+     * 这个数据处理需要处理脏数据的需求，就是需要
+     * 第一种方法就是拿出五个值 去掉最大和最小的的两个数值 再拿三个进行判断  优点：比较稳 ，但是延迟比较高 ，
+     * 第二种方法 拿三个值
+     * */
     Runnable runnable2 = new Runnable() {
         @Override
         public void run() {
@@ -511,5 +693,8 @@ public class GameModel implements View.OnClickListener{
     public void setContext(Context context) {
         this.context = context;
     }
+
+
+
 }
 

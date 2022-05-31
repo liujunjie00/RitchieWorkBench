@@ -23,13 +23,29 @@ public class MapsTools {
         pid = Integer.parseInt(ssr);
         return pid;
     }
+
+    public static int[] getPids(String appName){
+        int[] pids = new int[1];
+        String ssr = SystemUtil.execShellCmd("su root ps -A | grep "+appName).trim();
+        if (ssr.contains("\n")){
+            String[] pisStrs = ssr.split("\n");
+            for (int i = 0; i < pisStrs.length; i++) {
+                String sssy = pisStrs[i];
+                String ssr1 = sssy.substring(ssr.indexOf(" "),sssy.length()).trim();
+                ssr = ssr1.substring(0,ssr1.indexOf(" ")).trim();
+                int pid = Integer.parseInt(ssr);
+                pids[i] = pid;
+            }
+        }
+        return pids;
+    }
     /**
      * 这个函数就是筛选动作，这个数据搜索所有的关卡 ，*/
     public static List<String[]> getTest66(int pid, List<String[]> list) {
         List<String[]> test66 = new ArrayList<>(50);
         for (int i = 0; i < list.size(); i++) {
             // 这里查找到的返回值必须是带有test66字段的
-            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/search90a6019f13.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
+            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/MapsAndFTMS/search90a6019f13.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
             String result = stringBuilder.toString();
             if (result.length()>1 && result.contains("test66")){
                 Log.d(TAG, "查找到的结果是"+result);
@@ -44,12 +60,14 @@ public class MapsTools {
         }
         return test66;
     }
-
+    /**
+     * 性能优化前
+     * */
     public static List<String[]> getTest66(int pid, List<String[]> list, BaseCharacter baseCharacter) {
         List<String[]> test66 = new ArrayList<>(50);
         for (int i = 0; i < list.size(); i++) {
             // 这里查找到的返回值必须是带有test66字段的
-            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/tanKeReadOnceReturn.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
+            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/MapsAndFTMS/tanKeReadOnceReturn.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
             String result = stringBuilder.toString();
             if (result.length()>1 && result.contains("test66")){
                 Log.d(TAG, "查找到的结果是"+result);
@@ -64,17 +82,19 @@ public class MapsTools {
         }
         if (test66.size()<1){
 
-            throw new RuntimeException("没有查找到test66");
+            return null;
         }
         return test66;
     }
+
+
 
     /**
      *
      * 这个函数是全部修改test66的值全部的offSize都会被修改，效率第*/
     public static String allWrite(int pid,String starAddr,String endAddr) {
             // 这里查找到的返回值必须是带有test66字段的
-            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/b.out "+pid+" "+starAddr+" "+endAddr+" "+00);
+            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/MapsAndFTMS/b.out "+pid+" "+starAddr+" "+endAddr+" "+00);
             String result = stringBuilder.toString();
             //这里一个还要处理sizeOff的
             Log.d(TAG, "oneSearch: 全部修改的结果"+result);
@@ -84,7 +104,7 @@ public class MapsTools {
      * 这个这个oncewrite.out这个文件只会写入第一个offSize,效率搞 */
     public static String onceWrite(int pid,String starAddr,String endAddr) {
         // 这里查找到的返回值必须是带有test66字段的
-        StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/oncewrite.out "+pid+" "+starAddr+" "+endAddr+" "+00);
+        StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/MapsAndFTMS/oncewrite.out "+pid+" "+starAddr+" "+endAddr+" "+00);
         String result = stringBuilder.toString();
 
         Log.d(TAG, "oneSearch: 单个查询的结果是"+result);
@@ -96,7 +116,7 @@ public class MapsTools {
      * 金身的后面两位是 1720 09*/
     public static String onceWrite(int pid,String starAddr,String endAddr,int offSize,int value) {
         // 这里查找到的返回值必须是带有test66字段的
-        StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/readMemReturnOffset90a601.out "+pid+" "+starAddr+" "+endAddr+" "+offSize+" "+value);
+        StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/MapsAndFTMS/readMemReturnOffset90a601.out "+pid+" "+starAddr+" "+endAddr+" "+offSize+" "+value);
         String result = stringBuilder.toString();
 
         Log.d(TAG, "oneSearch: 单个查询的结果是"+result);
@@ -108,7 +128,7 @@ public class MapsTools {
         List<String[]> test66 = new ArrayList<>(50);
         for (int i = 0; i < list.size(); i++) {
             // 这里查找到的返回值必须是带有test66字段的
-            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/tanKeReadOnceReturn.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
+            StringBuilder stringBuilder = SystemUtil.execShellCmd2("su root /system/bin/MapsAndFTMS/tanKeReadOnceReturn.out "+pid+" "+list.get(i)[0]+" "+list.get(i)[1]+" "+88);
             String result = stringBuilder.toString();
             if (result.length()>1 && result.contains("test66")){
                 Log.d(TAG, "查找到的结果是"+result);
@@ -153,6 +173,7 @@ public class MapsTools {
      * /lib/arm/libnes.so
      * */
     public static List<String[]> getStartAndEnd(int pid){
+        //String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep rw-p | grep -A200 /lib/arm/libnes.so");
         String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep rw-p | grep -A200 /lib/arm/libnes.so");
         //String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep rw-p ");
         //String ff  = SystemUtil.execShellCmd("su root grep -v deleted -rsn proc/"+pid+"/maps | grep -A500 /lib/arm/libnes.so");
@@ -228,13 +249,13 @@ public class MapsTools {
     /**
      * 这里不能直接打log 打log会卡死程序 */
     public static void printfAllMem (int pid,String star,String end){
-       SystemUtil.execShellCmd("su root /system/bin/printAllMemChar.out "+pid+" "+star+" "+end+" "+88+" > /sdcard/test.txt ");
+       SystemUtil.execShellCmd("su root /system/bin/MapsAndFTMS/printAllMemChar.out "+pid+" "+star+" "+end+" "+88+" > /sdcard/test.txt ");
 
     }
 
 
     public static void fastWrite1 (int pid,String addr,int value){
-        String ssr = SystemUtil.execShellCmd("su root /system/bin/fastAddrWrite2.out "+pid+" "+addr+" "+value);
+        String ssr = SystemUtil.execShellCmd("su root /system/bin/MapsAndFTMS/fastAddrWrite2.out "+pid+" "+addr+" "+value);
         Log.d(TAG, "fastWrite1: "+ssr);
 
     }

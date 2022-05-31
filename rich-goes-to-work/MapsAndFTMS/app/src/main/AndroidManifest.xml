@@ -24,12 +24,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MapsAndFTMS">
+
         <service
             android:name=".service.RuningService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
         <service
             android:name=".service.ReadandwriteService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.SearchMapsServices"
             android:enabled="true"
             android:exported="true" />
 

@@ -38,6 +38,7 @@ public class RuningService extends Service {
     private String bikeName2 = "iConsole+105"; //13
     private static final String TAG= "liujunjie";
     private Context context;
+    private Intent intent = new Intent();
     public RuningService() {
     }
 
@@ -62,6 +63,7 @@ public class RuningService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     private void initBT(Context context,String Name,int index) {
+        intent.setAction("FindBluetoothDevices");
         lists = new ArrayList<>();
         bleManager = new BleManager(context);
         bleManager.scanNameAndConnect(Name, 20 * 1000, true, new BleGattCallback() {
@@ -76,13 +78,13 @@ public class RuningService extends Service {
                         String uuidItem = bluetoothGattCharacteristicList.get(j).getUuid().toString();
                         String[] itemIndex = new String[]{uuidService,uuidItem};
                         lists.add(itemIndex);
-
                     }
                 }
                 notifyBle(lists,index);
             }
             @Override
             public void onNotFoundDevice() {
+                stopService("没有找到设备");
                 Log.d(TAG, "onNotFoundDevice: 没有找到设备 ");
             }
 
@@ -100,6 +102,7 @@ public class RuningService extends Service {
             @Override
             public void onConnectFailure(BleException exception) {
                 Log.d(TAG, "onConnectFailure: 链接超时");
+                stopService("连接超时了");
             }
         });
     }
@@ -110,17 +113,26 @@ public class RuningService extends Service {
             public void onSuccess(BluetoothGattCharacteristic characteristic) {
                 byte[] dataBytes = characteristic.getValue();
                 BikeData1 c = IconsoleProFile.getBikeData2(dataBytes);
-                GameModel.upData(c);
+
+                intent.putExtra("state",1);
+                intent.putExtra("data",c);
+                context.sendBroadcast(intent);
+
                 Log.d(TAG, "onSuccess: "+dataBytes.toString());
             }
-
             @Override
             public void onFailure(BleException exception) {
+                stopService("找到设备了但是连接不上");
 
             }
         });
-        //Looper.loop();
 
+    }
+    private void stopService(String msg){
+        intent.putExtra("state",-1);
+        intent.putExtra("msg",msg);
+        context.sendBroadcast(intent);
+        stopSelf();
     }
 
 }

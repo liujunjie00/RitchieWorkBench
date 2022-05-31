@@ -1,6 +1,9 @@
 package com.ritchie.mapsandftms.proFile;
 
-public class BikeData1 extends Bike{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class BikeData1 extends Bike implements Parcelable {
     //[0000fff1] Notify: "                   00 00 00 00 00 00 00 05 01 00 33 0F 2B 00 00 00 73 AA"
 
     /*      [0000fff1] Notify: "55 14 瞬时速度00 39 00 00 00 00 00 里程 27 01 00 類似一個倒計時的東西00 未知：0F 2B 00 00 00 可以跟随变化 ：9B AA"
@@ -19,6 +22,27 @@ private int ElapsedTimePresent=0;           //消耗的时间   2
 
     public BikeData1() {
     }
+
+    protected BikeData1(Parcel in) {
+        MoreDataInstantaneousSpeed = in.readInt();
+        InstantaneousCadence = in.readInt();
+        TotalDistancePresentUint = in.readInt();
+        InstantaneousPowerPresent = in.readInt();
+        HeartRatePresent = in.readInt();
+        ElapsedTimePresent = in.readInt();
+    }
+
+    public static final Creator<BikeData1> CREATOR = new Creator<BikeData1>() {
+        @Override
+        public BikeData1 createFromParcel(Parcel in) {
+            return new BikeData1(in);
+        }
+
+        @Override
+        public BikeData1[] newArray(int size) {
+            return new BikeData1[size];
+        }
+    };
 
     public int getMoreDataInstantaneousSpeed() {
         return MoreDataInstantaneousSpeed;
@@ -78,5 +102,20 @@ private int ElapsedTimePresent=0;           //消耗的时间   2
                 ", 卡路里=" + HeartRatePresent +
                 ", 消耗时间=" + ElapsedTimePresent +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(MoreDataInstantaneousSpeed);
+        dest.writeInt(InstantaneousCadence);
+        dest.writeInt(TotalDistancePresentUint);
+        dest.writeInt(InstantaneousPowerPresent);
+        dest.writeInt(HeartRatePresent);
+        dest.writeInt(ElapsedTimePresent);
     }
 }

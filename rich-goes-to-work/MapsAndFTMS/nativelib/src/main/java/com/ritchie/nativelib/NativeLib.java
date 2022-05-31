@@ -1,5 +1,7 @@
 package com.ritchie.nativelib;
 
+import java.util.List;
+
 public class NativeLib {
 
     // Used to load the 'nativelib' library on application startup.
@@ -12,5 +14,8 @@ public class NativeLib {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+    public native long[] searchMapsForlist(List<String[]> list);
+    public native long[] searchMapsForStrings(String[] Strings);
+
 
 }
