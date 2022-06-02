@@ -14,6 +14,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.ritchie.mapsandftms.R;
+import com.ritchie.mapsandftms.kotlin.MyProgress;
 
 public class VerticalProgress extends View {
 
@@ -32,6 +33,7 @@ public class VerticalProgress extends View {
     private int mProgressBgColorId;
     //边框宽度
     private int mBorderWidth;
+
 
     public int getMax() {
         return max;
@@ -54,19 +56,43 @@ public class VerticalProgress extends View {
     private RectF mRectF;
     private Paint mPaint;
 
+    /**
+     * 这个是默认的构造函数
+     * */
     public VerticalProgress(Context context) {
         super(context);
         init(context, null);
-    }
 
+    }
+    /**
+     * 这个是在layout应用并且指定了参数才会调用的构造
+     * */
     public VerticalProgress(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
+    /**
+     * 这个是指定了style会调用的参数
+     * */
+    public VerticalProgress(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
+
+
+    /**
+     * 这个函数是指在界面中布局的大小的
+     * 主要用来测量
+     *
+     * MeasureSpec.AT_MOST  在布局中指定了wrap_content
+     * MeasureSpec.EXACTLY   这个指定了确切的值，宽高  match_parent 如100dp
+     * MeasureSpec.UNSPECIFIED 不对view的大小做限制
+     *
+     * */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
         mWidth = getMeasuredWidth() - 1;// 宽度值
         mHeight = getMeasuredHeight() - 1;// 高度值
     }
@@ -80,8 +106,8 @@ public class VerticalProgress extends View {
             mBorderEnable = typedArray.getBoolean(R.styleable.verticalProgress_progress_border_enable, false);
             mGradientEnable = typedArray.getBoolean(R.styleable.verticalProgress_progress_gradient_enable, true);
             mStartResId = typedArray.getResourceId(R.styleable.verticalProgress_progress_start_color, R.color.colorPrimary);
-            mProgressBgColorId = typedArray.getResourceId(R.styleable.verticalProgress_progress_solid_color, R.color.white);
-            mEndResId = typedArray.getResourceId(R.styleable.verticalProgress_progress_end_color, R.color.color_4EA6FD);
+            mProgressBgColorId = typedArray.getResourceId(R.styleable.verticalProgress_progress_solid_color, R.color.black);
+            mEndResId = typedArray.getResourceId(R.styleable.verticalProgress_progress_end_color, R.color.purple_500);
             mBorderColorResId = typedArray.getResourceId(R.styleable.verticalProgress_progress_border_color, R.color.color_4EA6FD);
             mBorderWidth = typedArray.getResourceId(R.styleable.verticalProgress_progress_border_width, 10);
         }
@@ -94,7 +120,8 @@ public class VerticalProgress extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
     }
-
+    /**
+     * 这个是画笔*/
     @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
@@ -117,6 +144,10 @@ public class VerticalProgress extends View {
             mRectF.set(mBorderWidth, mBorderWidth, mWidth - mBorderWidth, mHeight - mBorderWidth);
             //画背景层圆角矩形(盖在描边层之上)
             canvas.drawRoundRect(mRectF, mRadius, mRadius, mPaint);
+
+
+
+
         }
 
         if (mProgress == 0)//进度为 0不画进度

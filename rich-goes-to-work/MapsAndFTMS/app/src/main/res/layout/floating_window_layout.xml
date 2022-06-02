@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="330dp"
+    android:layout_height="600dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:background="@color/white">
+    android:background="@color/bragound">
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="match_parent"
@@ -86,12 +86,14 @@
             android:layout_height="wrap_content"
             android:hint="距离0x190xa6的偏移量"
             android:id="@+id/edit_text3"
+            android:visibility="gone"
             />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="查找的值"
             android:id="@+id/edit_text4"
+            android:visibility="gone"
             />
         <Button
             android:layout_width="wrap_content"
@@ -106,6 +108,7 @@
             android:text="这个是提示信息"
             android:textSize="25dp"
             android:layout_marginTop="30dp"
+            android:visibility="gone"
             />
 
         <Button
@@ -116,10 +119,9 @@
             android:textSize="25dp"
             android:layout_marginTop="20dp"
             />
-
-
      </LinearLayout>
     </LinearLayout>
+
 
 
 </LinearLayout>

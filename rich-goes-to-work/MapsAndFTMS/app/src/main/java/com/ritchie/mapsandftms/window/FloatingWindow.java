@@ -1,6 +1,8 @@
 package com.ritchie.mapsandftms.window;
 
 import static android.content.Context.WINDOW_SERVICE;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -42,7 +44,7 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
     private DisplayMetrics displayMetrics;
     private Context context;
     private int width, high;
-    private View view,activity;
+    private View view,activity,SpeedShowView;
     private int pid;
     private List<Map<String, Object>> deviceShow;
     public TextView textViewMain, textView2;
@@ -62,6 +64,7 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
 
 
 
+
     public FloatingWindow(Context context) {
         this.context = context;
     }
@@ -70,6 +73,7 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
         bikeData = c;
     }
 
+    @SuppressLint("RtlHardcoded")
     public void initWindow() {
         if (Settings.canDrawOverlays(context)) {
             windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
@@ -105,6 +109,27 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
             handler = new Handler(Looper.myLooper());
             handler.postDelayed(runnable1, 2 * 1000);
         }
+    }
+    @SuppressLint("RtlHardcoded")
+    public void speedShow(){
+        WindowManager.LayoutParams layoutParamsSpeedShow = new WindowManager.LayoutParams();
+        DisplayMetrics displayMetricsSpeedShow = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetricsSpeedShow);
+        int SpeedShowWidth = displayMetrics.widthPixels;
+        int SpeedShowHigh = displayMetrics.heightPixels;
+        layoutParamsSpeedShow.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        layoutParamsSpeedShow.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        layoutParams.format = PixelFormat.RGB_565;
+        layoutParams.alpha = 0.8f;
+        layoutParams.width = 330;
+        layoutParams.height = 600;
+        layoutParams.gravity = Gravity.RIGHT;
+        layoutParams.x = 10;
+        layoutParams.y = 10;
+        SpeedShowView = LayoutInflater.from(context).inflate(R.layout.board_view, null);
+        windowManager.addView(SpeedShowView,null);
+
+
     }
 
     public void setAllViewOnClick() {
@@ -228,6 +253,7 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
      * 保存maps段
      * 查找sizeOff段
      * 关闭某些界面
+     * 拉起另外一个界面
      **/
      private void button2Evemt() {
          synchronized(this){
@@ -238,9 +264,7 @@ public class FloatingWindow implements View.OnClickListener,View.OnFocusChangeLi
                  context.startService(intent2);
                  textViewMain.setText("正在寻找单车");
                  bicycleMonitoringService=true;
-                // goldenBody();
-
-               //  activity.setVisibility(View.INVISIBLE);
+                 speedShow();
              }
          }
     }

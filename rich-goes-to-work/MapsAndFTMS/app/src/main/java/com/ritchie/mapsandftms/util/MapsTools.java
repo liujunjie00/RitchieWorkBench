@@ -18,6 +18,9 @@ public class MapsTools {
     public static int getPid(String appName){
         int pid ;
         String ssr = SystemUtil.execShellCmd("su root ps -A | grep -v restart | grep "+appName).trim();
+        if (ssr.length()<1){
+            return 0;
+        }
         String ssr1 = ssr.substring(ssr.indexOf(" "),ssr.length()).trim();
         ssr = ssr1.substring(0,ssr1.indexOf(" ")).trim();
         pid = Integer.parseInt(ssr);
@@ -27,6 +30,9 @@ public class MapsTools {
     public static int[] getPids(String appName){
         int[] pids = new int[1];
         String ssr = SystemUtil.execShellCmd("su root ps -A | grep "+appName).trim();
+        if (ssr.length()<1){
+            return null;
+        }
         if (ssr.contains("\n")){
             String[] pisStrs = ssr.split("\n");
             for (int i = 0; i < pisStrs.length; i++) {

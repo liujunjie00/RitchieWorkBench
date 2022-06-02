@@ -4,6 +4,11 @@ import static android.content.Context.WINDOW_SERVICE;
 
 import static com.ritchie.mapsandftms.window.FloatingWindow.bikeData;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,9 +44,12 @@ import com.ritchie.mapsandftms.proFile.BikeData1;
 import com.ritchie.mapsandftms.proFile.ListParcelable;
 import com.ritchie.mapsandftms.service.RuningService;
 import com.ritchie.mapsandftms.service.SearchMapsServices;
+import com.ritchie.mapsandftms.ui.DashboardView4;
 import com.ritchie.mapsandftms.ui.VerticalProgress;
 import com.ritchie.mapsandftms.util.MapsTools;
 import com.ritchie.mapsandftms.util.SystemUtil;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,10 +61,10 @@ import java.util.Random;
  * */
 public class GameModel implements View.OnClickListener{
     private List<Map<String, Object>> deviceShow;
-    private WindowManager windowManager;
+    private WindowManager windowManager,windowManager2;
     private WindowManager.LayoutParams layoutParams;
     private  DisplayMetrics displayMetrics;
-    private View view;
+    private View view,SpeedShowView;
     private Button button1,button2,button3,button4,button5,textView3;
     private ListView listView1;
     private TextView textViewMain,textView2;
@@ -85,6 +94,11 @@ public class GameModel implements View.OnClickListener{
     private int countCad = 0;
     private int countCad1 = 0;
     private Handler handlerSearchMaps;
+    private int[] countCadStack ={0,0,0};
+    private DashboardView4 dashboardView4;
+    private boolean isAnimFinished = true;
+
+
     /**
      * 这是一个广播接收器，接受处理maps的数据
      * “searcherMaps”
@@ -138,10 +152,43 @@ public class GameModel implements View.OnClickListener{
             if (state != -1) {
                 BikeData1 bikeData1p = bundle.getParcelable("data");
                 bikeData = bikeData1p;
-                handler.post(runnable2);
+
+                Log.d("888888", "onReceive: "+isAnimFinished);
+                if (isAnimFinished){
+                    @SuppressLint("ObjectAnimatorBinding") ObjectAnimator animator = ObjectAnimator.ofInt(dashboardView4, "mRealTimeValue",
+                            dashboardView4.getVelocity(),bikeData1p.getInstantaneousCadence());
+                    animator.setDuration(400).setInterpolator(new LinearInterpolator());
+                    animator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            isAnimFinished = false;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            isAnimFinished = true;
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            isAnimFinished = true;
+                        }
+                    });
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int value = (int) animation.getAnimatedValue();
+                            dashboardView4.setVelocity(value);
+                        }
+                    });
+                    animator.start();
+                }
+                handler.post(tankeFastRunable);
+
             }else {
                 textViewMain.setText("没有找到单车");
             }
+
         }
     };
     /**
@@ -166,7 +213,7 @@ public class GameModel implements View.OnClickListener{
         if (Settings.canDrawOverlays(context)) {
             windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
             layoutParams = new WindowManager.LayoutParams();
-            displayMetrics = new DisplayMetrics();
+            displayMetrics = context.getResources().getDisplayMetrics();
             windowManager.getDefaultDisplay().getMetrics(displayMetrics);
             layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
             layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -195,6 +242,51 @@ public class GameModel implements View.OnClickListener{
             random = new Random();
             handler = new Handler(Looper.myLooper());
         }
+    }
+
+    @SuppressLint("RtlHardcoded")
+    public void speedShow(){
+        windowManager2 = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        WindowManager.LayoutParams layoutParamsSpeedShow = new WindowManager.LayoutParams();
+        DisplayMetrics displayMetricsSpeedShow = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetricsSpeedShow);
+        layoutParamsSpeedShow.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        layoutParamsSpeedShow.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        layoutParamsSpeedShow.format = PixelFormat.RGB_565;
+        layoutParamsSpeedShow.alpha = 0.8f;
+        layoutParamsSpeedShow.width = 330;
+        layoutParamsSpeedShow.height = 330;
+        layoutParamsSpeedShow.gravity = Gravity.RIGHT;
+        layoutParamsSpeedShow.x = 0;
+        layoutParamsSpeedShow.y = 0;
+        SpeedShowView = LayoutInflater.from(context).inflate(R.layout.board_view, null);
+        dashboardView4 = SpeedShowView.findViewById(R.id.board_view_progress);
+        windowManager2.addView(SpeedShowView,layoutParamsSpeedShow);
+        SpeedShowView.setOnTouchListener(new View.OnTouchListener() {
+            final WindowManager.LayoutParams floatWindowLayoutUpdateParamww = layoutParamsSpeedShow;
+            double x;
+            double y;
+            double px;
+            double py;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x = floatWindowLayoutUpdateParamww.x;
+                        y = floatWindowLayoutUpdateParamww.y;
+                        px = event.getRawX();
+                        py = event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // 拿到 视图的现在的显示位置  + （动画移动的位置（坐标） - 第一次触摸的位置（坐标））
+                        floatWindowLayoutUpdateParamww.x = (int) (x + (px - event.getRawX()));
+                        floatWindowLayoutUpdateParamww.y = (int) ((y + event.getRawY()) - py);
+                        windowManager2.updateViewLayout(SpeedShowView, floatWindowLayoutUpdateParamww);
+                        break;
+                }
+                return false;
+            }
+        });
     }
     /**
      * 注册所有的点击事件*/
@@ -288,6 +380,9 @@ public class GameModel implements View.OnClickListener{
 
     private void button5Event() {
        int[] pids =  MapsTools.getPids("com.ezl.emulator.nes");
+       if (pids == null){
+           return;
+       }
         for (int i = 0; i < pids.length; i++) {
             SystemUtil.KillPid(pids[i]);
         }
@@ -295,6 +390,12 @@ public class GameModel implements View.OnClickListener{
     }
 
     private void button4Event() {
+        String ss = SystemUtil.execShellCmd("su root echo 9999 > /sdcard/Download/ccc.txt");
+        try {
+            Runtime.getRuntime().exec("su root echo 9696969 > /sdcard/Download/ccc.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void button3Event() {
@@ -307,6 +408,10 @@ public class GameModel implements View.OnClickListener{
             Intent intent2 = new Intent(context, RuningService.class);
             context.startService(intent2);
             textViewMain.setText("正在寻找单车");
+            if (windowManager2 == null){
+                speedShow();
+            }
+
     }
     /*private void button2Evemt() {
         if (!starGame){
@@ -516,6 +621,7 @@ public class GameModel implements View.OnClickListener{
 
     int timer = 0;
     /**
+     * 这个值是三秒刷新一次
      * 这个数据处理需要处理脏数据的需求，就是需要
      * 第一种方法就是拿出五个值 去掉最大和最小的的两个数值 再拿三个进行判断  优点：比较稳 ，但是延迟比较高 ，
      * 第二种方法 拿三个值
@@ -523,8 +629,6 @@ public class GameModel implements View.OnClickListener{
     Runnable runnable2 = new Runnable() {
         @Override
         public void run() {
-            textView3.setText(" "+(timer++));
-            if (bikeData != null && bikeData instanceof BikeData1) {
                 BikeData1 bikeData1 = (BikeData1) bikeData;
                 int Cadence = bikeData1.getInstantaneousCadence();
                 int countKM = bikeData1.getTotalDistancePresentUint();
@@ -532,7 +636,7 @@ public class GameModel implements View.OnClickListener{
                     countCad += Cadence;
                     countCad1++;
                     if (countCad1 == 3) {
-                        if (countCad < 20 * 3) {
+                        if (countCad < 25 * 3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -540,7 +644,7 @@ public class GameModel implements View.OnClickListener{
                             MapsTools.fastWrite1(pid, addrdd, 0x00);
                             textView2.setText("正常模式");
                         }
-                        if (countCad > 35 * 3 && countCad < 50 *3) {
+                        if (countCad > 25 * 3 && countCad < 50 *3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -549,7 +653,7 @@ public class GameModel implements View.OnClickListener{
                             textView2.setText("模式1");
                         }
 
-                        if (countCad > 50 * 3 && countCad <65 * 3 ) {
+                        if (countCad > 50 * 3 && countCad <75 * 3 ) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -557,7 +661,7 @@ public class GameModel implements View.OnClickListener{
                             MapsTools.fastWrite1(pid, addrdd, 0x40);
                             textView2.setText("模式2");
                         }
-                        if (countCad > 65 * 3 && countCad <80 * 3) {
+                        if (countCad > 75 * 3 && countCad <80 * 3) {
                             SkillData[] skillData = tankeFeature.getSkillData();
                             long addr = skillData[0].getPhysicalAddress();
                             String ssss = String.format("%016x",addr);
@@ -573,10 +677,7 @@ public class GameModel implements View.OnClickListener{
                             MapsTools.fastWrite1(pid, addrdd, 0x03);
                             textView2.setText("敌方静止不动");
                         }
-
-
                     }
-
                 } else {
                     countCad = 0;
                     countCad1 = 0;
@@ -586,15 +687,138 @@ public class GameModel implements View.OnClickListener{
                 verticalProgress.setProgress(speed);
                 textViewMain.setText("现在的踏频是："+Cadence);
             }
-                handler.postDelayed(runnable2, 1 * 1000);
-
-
-        }
-        public void vertical(int countKM,boolean iso) {
-
-        }
 
     };
+    /**
+     * 要写一个一秒刷新的线程
+     * 搞一个数据池，一共三个元素，先进后出，递归
+     * 从第4个开始砍掉前面1个
+     * 然后进行判断
+     * 之后的每一个都开始判断
+     */
+    final Runnable tankeFastRunable = new Runnable() {
+        @Override
+        public void run() {
+            BikeData1 bikeData1 = (BikeData1) bikeData;
+            int Cadence = bikeData1.getInstantaneousCadence();
+
+            if ((Cadence - countCadStack[2]) + (Cadence - countCadStack[1]) + (Cadence - countCadStack[0]) < -60) {
+                SkillData[] skillData = tankeFeature.getSkillData();
+                long addr = skillData[0].getPhysicalAddress();
+                String ssss = String.format("%016x", addr);
+                String addrdd = "0x" + ssss;
+                MapsTools.fastWrite1(pid, addrdd, 0x00);
+                textView2.setText("正常模式");
+                countCadStack[0] = countCadStack[1];
+                countCadStack[1] = countCadStack[2];
+                countCadStack[2] = Cadence;
+                int countKM = bikeData1.getTotalDistancePresentUint();
+                //textView3.setText(countKM);
+                double ss = 100 / 60;
+                int speed = (int) (ss * Cadence);
+                verticalProgress.setProgress(speed);
+                textViewMain.setText("现在的踏频是：" + Cadence);
+                return;
+            }
+            countCadStack[0] = countCadStack[1];
+            countCadStack[1] = countCadStack[2];
+            countCadStack[2] = Cadence;
+            for (int k = 0; k < countCadStack.length; k++) {
+                countCad += countCadStack[k];
+            }
+            if (countCad < 30 * 3) {
+                SkillData[] skillData = tankeFeature.getSkillData();
+                long addr = skillData[0].getPhysicalAddress();
+                String ssss = String.format("%016x", addr);
+                String addrdd = "0x" + ssss;
+                MapsTools.fastWrite1(pid, addrdd, 0x00);
+                textView2.setText("正常模式");
+            }
+            if (countCad > 30 * 3 && countCad < 60 * 3) {
+                SkillData[] skillData = tankeFeature.getSkillData();
+                long addr = skillData[0].getPhysicalAddress();
+                String ssss = String.format("%016x", addr);
+                String addrdd = "0x" + ssss;
+                MapsTools.fastWrite1(pid, addrdd, 0x20);
+                textView2.setText("模式1");
+            }
+
+            if (countCad > 60 * 3 && countCad < 90 * 3) {
+                SkillData[] skillData = tankeFeature.getSkillData();
+                long addr = skillData[0].getPhysicalAddress();
+                String ssss = String.format("%016x", addr);
+                String addrdd = "0x" + ssss;
+                MapsTools.fastWrite1(pid, addrdd, 0x40);
+                textView2.setText("模式2");
+            }
+            if (countCad > 90 * 3) {
+                SkillData[] skillData = tankeFeature.getSkillData();
+                long addr = skillData[0].getPhysicalAddress();
+                String ssss = String.format("%016x", addr);
+                String addrdd = "0x" + ssss;
+                MapsTools.fastWrite1(pid, addrdd, 0x60);
+                textView2.setText("模式3");
+            }
+            if (countCad > 100 * 3) {
+                SkillData[] skillData = tankeFeature.getSkillData();
+                long addr = skillData[5].getPhysicalAddress();
+                String ssss = String.format("%016x", addr);
+                String addrdd = "0x" + ssss;
+                MapsTools.fastWrite1(pid, addrdd, 0x2);
+                textView2.setText("金身");
+            }
+            countCad = 0;
+            int countKM = bikeData1.getTotalDistancePresentUint();
+            //textView3.setText(countKM);
+            double ss = 100 / 60;
+            int speed = (int) (ss * Cadence);
+            verticalProgress.setProgress(speed);
+            textViewMain.setText("现在的踏频是：" + Cadence);
+            //这里更新指针的弹跳速度
+                /*handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        int dateForDashboardView4 = dashboardView4.getVelocity();
+
+                        if ( dateForDashboardView4 == 0 ){
+                            dashboardView4.setVelocity(Cadence);
+                        }else {
+                            int differenceData = (Cadence>dateForDashboardView4) ? Cadence-dateForDashboardView4 : dateForDashboardView4-Cadence;
+                            if (dateForDashboardView4 > Cadence){
+                                float time = 500f/(float)differenceData;
+                                for (int T = 0; T < differenceData; T++) {
+                                    dashboardView4.setVelocity(dateForDashboardView4--);
+                                    try {
+                                        Thread.sleep((long) time);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }else {
+                                float time = 500f/(float)differenceData;
+                                for (int K = 0; K < differenceData; K++) {
+                                    dashboardView4.setVelocity(dateForDashboardView4++);
+                                    try {
+                                        Thread.sleep((long) time);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+
+                            }
+
+                        }
+
+                    }
+                });*/
+
+
+        }
+    };
+
     /**
      * 这个方法是测试用到的，过时了*/
     @Deprecated

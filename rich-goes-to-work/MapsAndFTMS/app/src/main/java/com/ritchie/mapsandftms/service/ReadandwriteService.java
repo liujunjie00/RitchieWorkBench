@@ -27,13 +27,15 @@ public class ReadandwriteService extends Service {
         SkillData skillData2 = new SkillData(1,0xa8,0x40,0x00,"模式切换2");
         SkillData skillData3 = new SkillData(2,0xa8,0x60,0x00,"模式切换3");
         SkillData skillData4 = new SkillData(3,0x45,0x1f,0x00,"铁墙");
-        SkillData skillData5 = new SkillData(4,0x100,0xa,0x00,"禁止不动");
+        SkillData skillData5 = new SkillData(4,0x100,0x2,0x00,"禁止不动");
+        SkillData skillData6 = new SkillData(5,0x89,0x2,0x00,"保护模式");
         SkillData[] skillData = new SkillData[]{
                 skillData1,
                 skillData2,
                 skillData3,
                 skillData4,
                 skillData5,
+                skillData6
 
         };
         TankeFeature tankeFeature = new TankeFeature(gameName,skillData,baseCharacter);

@@ -17,5 +17,9 @@
         android:layout_marginLeft="10dp"
         android:id="@+id/control_view"
         />
+    <com.ritchie.mapsandftms.ui.MeterView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

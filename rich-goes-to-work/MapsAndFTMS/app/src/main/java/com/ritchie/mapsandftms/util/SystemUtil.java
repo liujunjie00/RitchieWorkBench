@@ -136,6 +136,44 @@ public class SystemUtil {
 		UserModeManager.switchToUserMode(userMode);
 		return result;
 	}
+	/**
+	 * 改良版本的执行脚本
+	 * */
+	public static String execScriptCmd2(String command, String path, boolean root) {
+		File tempFile = null;
+		String result = "";
+		BufferedWriter br = null;
+		Log.i("execScriptCmd", command);
+		try {
+			tempFile = new File(path);
+			//首先执行删除操作
+			tempFile.deleteOnExit();
+			br = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(tempFile)));
+			br.write("#!/system/bin/sh\n");
+			br.write(command);
+			SystemUtil.execShellCmd("su root chmod 777 "
+					+ tempFile.getAbsolutePath());
+			result = SystemUtil.execShellCmd((root ? "su root " : "")
+					+ tempFile.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (tempFile != null && tempFile.exists()) {
+				tempFile.delete();
+			}
+			if (br != null){
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
 
 	public static boolean killProcessByPath(String exePath) {
 		File dir = new File("/proc/");
